@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hecate – Digital Vault</title>
+  <meta name="description" content="Hecate Digital Vault – Your passwords, crypto keys and legal documents, encrypted on your device with a key only you hold." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07080d;
+      --bg2: #0d0f1a;
+      --surface: #111320;
+      --surface2: #181b2e;
+      --accent: #7b5ea7;
+      --accent2: #a67fd8;
+      --accent3: #c49ef5;
+      --gold: #e8c96d;
+      --text: #f0eff6;
+      --muted: #8b8ba0;
+      --border: rgba(123, 94, 167, 0.25);
+      --glow: rgba(123, 94, 167, 0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(7, 8, 13, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(123, 94, 167, 0.12);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .nav-logo-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--text);
+      color: #07080d;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 50px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -200px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 700px;
+      background: radial-gradient(ellipse at center, rgba(123, 94, 167, 0.28) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(123, 94, 167, 0.15);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent3);
+      margin-bottom: 28px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 88px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent3) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.65;
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 72px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--text);
+      color: #07080d;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 50px;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 32px rgba(240, 239, 246, 0.18);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px rgba(240, 239, 246, 0.22);
+    }
+
+    .btn-primary svg { flex-shrink: 0; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 16px 32px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(123, 94, 167, 0.1);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ── SCREENSHOTS STRIP ── */
+    .screenshots {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 16px;
+      position: relative;
+    }
+
+    .screen-wrap {
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .screen-wrap:hover { transform: translateY(-12px) scale(1.03) !important; }
+
+    .screen-wrap img {
+      display: block;
+      border-radius: 28px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    /* Individual sizes & rotations */
+    .screen-wrap:nth-child(1) { transform: rotate(-8deg) translateY(20px); z-index: 1; }
+    .screen-wrap:nth-child(2) { transform: rotate(-4deg) translateY(8px);  z-index: 2; }
+    .screen-wrap:nth-child(3) { transform: rotate(0deg) translateY(0px);   z-index: 5; }
+    .screen-wrap:nth-child(4) { transform: rotate(4deg) translateY(8px);   z-index: 2; }
+    .screen-wrap:nth-child(5) { transform: rotate(8deg) translateY(20px);  z-index: 1; }
+
+    .screen-wrap:nth-child(1) img,
+    .screen-wrap:nth-child(5) img { width: 140px; opacity: 0.55; }
+    .screen-wrap:nth-child(2) img,
+    .screen-wrap:nth-child(4) img { width: 175px; opacity: 0.75; }
+    .screen-wrap:nth-child(3) img { width: 210px; }
+
+    /* ── SECTION WRAPPER ── */
+    section { position: relative; z-index: 1; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      padding: 64px 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .trust-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .trust-item {
+      flex: 1 1 180px;
+      padding: 32px 28px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .trust-item:last-child { border-right: none; }
+
+    .trust-num {
+      font-size: 34px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent3), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .trust-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 100px 24px;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 520px;
+      margin: 0 auto 64px;
+      line-height: 1.65;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(123, 94, 167, 0.18);
+    }
+
+    .feature-icon {
+      width: 50px; height: 50px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.2px;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── CATEGORIES ── */
+    .categories {
+      padding: 100px 24px;
+      background: var(--bg2);
+    }
+
+    .cats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cat-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .cat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 36px rgba(123, 94, 167, 0.16);
+    }
+
+    .cat-emoji {
+      font-size: 32px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .cat-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .cat-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── SCREENSHOTS GALLERY ── */
+    .gallery {
+      padding: 100px 24px;
+    }
+
+    .gallery-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 24px 0 32px;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .gallery-scroll::-webkit-scrollbar { display: none; }
+
+    .gallery-item {
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    .gallery-item img {
+      height: 480px;
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .gallery-item:hover img { transform: scale(1.03) translateY(-8px); }
+
+    /* ── SECURITY SECTION ── */
+    .security {
+      padding: 100px 24px;
+      background: var(--bg2);
+    }
+
+    .security-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .security-text h2 {
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .security-text h2 span {
+      background: linear-gradient(135deg, var(--accent3), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .security-text p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .security-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .security-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .security-list li::before {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      min-width: 22px;
+      background: rgba(123, 94, 167, 0.2);
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      font-size: 11px;
+      color: var(--accent3);
+      margin-top: 1px;
+      font-weight: 700;
+    }
+
+    .security-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sec-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .sec-card:hover {
+      border-color: var(--accent);
+      transform: translateX(6px);
+    }
+
+    .sec-card-icon {
+      font-size: 24px;
+      width: 46px; height: 46px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(123, 94, 167, 0.12);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .sec-card-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .sec-card-text span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── PRICING ── */
+    .pricing {
+      padding: 100px 24px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px 32px;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .price-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(123, 94, 167, 0.15);
+    }
+
+    .price-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, rgba(123, 94, 167, 0.12) 0%, var(--surface) 60%);
+      box-shadow: 0 0 0 1px var(--accent), 0 24px 64px rgba(123, 94, 167, 0.25);
+    }
+
+    .price-badge {
+      position: absolute;
+      top: -13px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .price-tier {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 8px;
+    }
+
+    .price-amount {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .price-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .price-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .price-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .price-features li::before {
+      content: '✓';
+      color: var(--accent3);
+      font-weight: 700;
+      font-size: 13px;
+      min-width: 16px;
+    }
+
+    .price-features li.dim { opacity: 0.45; }
+    .price-features li.dim::before { content: '✗'; color: var(--muted); }
+
+    .price-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .price-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .price-btn.outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .price-btn.filled {
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      color: white;
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      padding: 100px 24px;
+      background: var(--bg2);
+      text-align: center;
+    }
+
+    .cta-card {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 64px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 300px;
+      background: radial-gradient(ellipse, rgba(123, 94, 167, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-card h2 {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .cta-card h2 span {
+      background: linear-gradient(135deg, var(--accent3), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-card p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .appstore-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--text);
+      color: #07080d;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-size: 17px;
+      font-weight: 700;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 40px rgba(240,239,246,0.18);
+    }
+
+    .appstore-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 48px rgba(240,239,246,0.22);
+    }
+
+    .cta-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+
+      .screen-wrap:nth-child(1),
+      .screen-wrap:nth-child(5) { display: none; }
+
+      .screen-wrap:nth-child(2) img,
+      .screen-wrap:nth-child(4) img { width: 140px; }
+
+      .screen-wrap:nth-child(3) img { width: 170px; }
+
+      .security-inner { grid-template-columns: 1fr; gap: 40px; }
+
+      .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .trust-item:last-child { border-bottom: none; }
+
+      .cta-card { padding: 40px 24px; }
+
+      .gallery-scroll { flex-wrap: nowrap; justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a href="#" class="nav-logo" aria-label="Hecate Digital Vault home">
+      <div class="nav-logo-icon">🔐</div>
+      <span class="nav-logo-text">Hecate</span>
+    </a>
+    <a href="https://apps.apple.com/us/app/hecate-digital-vault/id6813952247" class="nav-cta" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download Free
+    </a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-badge">
+      <span class="hero-badge-dot" aria-hidden="true"></span>
+      Available on the App Store · Free
+    </div>
+    <h1>Your vault.<br /><span>Zero knowledge.</span></h1>
+    <p class="hero-sub">
+      Passwords, crypto keys, and legal documents — encrypted on your device with AES-256-GCM behind Face ID. Not even we can read them.
+    </p>
+    <div class="hero-actions">
+      <a href="https://apps.apple.com/us/app/hecate-digital-vault/id6813952247" class="btn-primary" target="_blank" rel="noopener" aria-label="Download Hecate on the App Store">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+      <a href="#features" class="btn-secondary">
+        Learn more ↓
+      </a>
+    </div>
+
+    <!-- Screenshots -->
+    <div class="screenshots" role="img" aria-label="Hecate app screenshots">
+      <div class="screen-wrap">
+        <img src="460x998bb-2.webp" alt="Hecate app screen – categories view" loading="lazy" />
+      </div>
+      <div class="screen-wrap">
+        <img src="460x998bb-3.webp" alt="Hecate app screen – legal documents" loading="lazy" />
+      </div>
+      <div class="screen-wrap">
+        <img src="460x998bb.webp" alt="Hecate app screen – main vault" loading="lazy" />
+      </div>
+      <div class="screen-wrap">
+        <img src="460x998bb-4.webp" alt="Hecate app screen – crypto keys" loading="lazy" />
+      </div>
+      <div class="screen-wrap">
+        <img src="460x998bb-5.webp" alt="Hecate app screen – passwords" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRUST BAR ── -->
+  <section class="trust-bar" aria-label="Key stats">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <span class="trust-num">AES-256</span>
+        <span class="trust-label">Encryption standard</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">0</span>
+        <span class="trust-label">Data collected</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">24-word</span>
+        <span class="trust-label">Recovery phrase</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">$9.99</span>
+        <span class="trust-label">One-time premium unlock</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="features" id="features">
+    <div class="container">
+      <p class="section-label">Why Hecate</p>
+      <h2 class="section-title">Built for things that actually matter</h2>
+      <p class="section-sub">Every feature was designed around one principle: your data belongs to you and only you.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(123,94,167,0.15);">🔒</div>
+          <h3>Truly Private by Design</h3>
+          <p>No account to create, no server to trust. Your master key is generated on-device and stored in the iOS Keychain, bound to your device alone.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(232,201,109,0.12);">☁️</div>
+          <h3>Private iCloud Sync</h3>
+          <p>Your vault syncs through your own private iCloud database. Even in the cloud it's nothing but a block of random bytes — we can't read it.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(166,127,216,0.15);">👁️</div>
+          <h3>Face ID &amp; Touch ID</h3>
+          <p>Nothing is decrypted until you authenticate. A 6-digit minimum app passcode serves as your fallback. Locked down, every time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(123,94,167,0.15);">📄</div>
+          <h3>Scan Paper Documents</h3>
+          <p>Point your camera at any document. On-device OCR reads the text, then encrypts it directly into your vault. The scan never touches a network.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(232,201,109,0.12);">🗝️</div>
+          <h3>24-Word Recovery Phrase</h3>
+          <p>Your vault can survive a lost phone. Generate a 24-word recovery phrase shown exactly once — write it down and your vault can be restored on any new device.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(166,127,216,0.15);">⏱️</div>
+          <h3>Dead Man's Switch</h3>
+          <p>Set a 30, 60, or 90-day check-in interval. Digital Vault tracks the countdown entirely on your device — a simple, honest legacy plan for the people you love.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CATEGORIES ── -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <p class="section-label">Organized for real life</p>
+      <h2 class="section-title">Four categories, one vault</h2>
+      <p class="section-sub">Structured to match what people actually store, not what an engineer imagined they would.</p>
+
+      <div class="cats-grid">
+        <div class="cat-card">
+          <span class="cat-emoji">⚖️</span>
+          <h3>Legal</h3>
+          <p>Wills, deeds, policies, and contracts — the documents your family needs, exactly when they need them.</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-emoji">₿</span>
+          <h3>Crypto</h3>
+          <p>Seed phrases, wallet addresses, and exchange logins. Lose access to neither your coins nor your heirs.</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-emoji">🔑</span>
+          <h3>Passwords</h3>
+          <p>Logins, PINs, licence keys, and Wi-Fi codes. Encrypted on-device, not in someone else's cloud.</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-emoji">💌</span>
+          <h3>Legacy</h3>
+          <p>The letters and instructions meant for someone else — stored safely until the moment they're needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ── -->
+  <section class="gallery" id="screenshots" aria-label="App screenshots gallery">
+    <div class="container">
+      <p class="section-label">Inside the app</p>
+      <h2 class="section-title">See it for yourself</h2>
+      <p class="section-sub">Clean, focused, and purposefully minimal — every screen built around clarity and calm.</p>
+    </div>
+    <div class="gallery-scroll">
+      <div class="gallery-item">
+        <img src="460x998bb.webp" alt="Hecate vault home screen" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="460x998bb-2.webp" alt="Hecate categories screen" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="460x998bb-3.webp" alt="Hecate legal documents screen" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="460x998bb-4.webp" alt="Hecate crypto screen" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="460x998bb-5.webp" alt="Hecate passwords screen" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="460x998bb-6.webp" alt="Hecate legacy screen" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECURITY ── -->
+  <section class="security" id="security">
+    <div class="security-inner">
+      <div class="security-text">
+        <p class="section-label" style="text-align:left;">Zero-knowledge architecture</p>
+        <h2>We can't read your data. <span>That's the point.</span></h2>
+        <p>
+          Most "secure" apps encrypt data on a server they control — meaning they technically can read it. Hecate takes a different approach: encryption happens entirely on your device, before anything is written to disk or synced.
+        </p>
+        <ul class="security-list">
+          <li>AES-256-GCM encryption on-device, not on a server</li>
+          <li>Master key stored in the iOS Keychain, bound to your device</li>
+          <li>iCloud sync sends only encrypted bytes — never plaintext</li>
+          <li>No password reset, no data recovery, no back door</li>
+          <li>Developer collects zero data from the app</li>
+        </ul>
+      </div>
+      <div class="security-visual" aria-hidden="true">
+        <div class="sec-card">
+          <div class="sec-card-icon">🛡️</div>
+          <div class="sec-card-text">
+            <strong>AES-256-GCM</strong>
+            <span>Military-grade authenticated encryption</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-icon">🔑</div>
+          <div class="sec-card-text">
+            <strong>iOS Keychain</strong>
+            <span>Key bound to your device, nowhere else</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-icon">☁️</div>
+          <div class="sec-card-text">
+            <strong>Private iCloud DB</strong>
+            <span>Your own database, not ours</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-icon">📵</div>
+          <div class="sec-card-text">
+            <strong>No network for scans</strong>
+            <span>OCR runs fully on-device</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-icon">👤</div>
+          <div class="sec-card-text">
+            <strong>No account required</strong>
+            <span>Nothing to breach on our end</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <p class="section-label">Pricing</p>
+      <h2 class="section-title">Simple. Honest. No subscriptions.</h2>
+      <p class="section-sub">Start free, unlock more when you need it. No renewal, no upsells, ever.</p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Free</div>
+          <div class="price-amount">$0</div>
+          <div class="price-sub">Forever, no credit card</div>
+          <ul class="price-features">
+            <li>Up to 10 vault items</li>
+            <li>All four categories</li>
+            <li>Face ID &amp; Touch ID</li>
+            <li>Document scanner</li>
+            <li>24-word recovery phrase</li>
+            <li class="dim">Unlimited items</li>
+          </ul>
+          <a href="https://apps.apple.com/us/app/hecate-digital-vault/id6813952247" class="price-btn outline" target="_blank" rel="noopener">Get Started Free</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-badge">Best Value</div>
+          <div class="price-tier">Premium</div>
+          <div class="price-amount">$9.99</div>
+          <div class="price-sub">One-time purchase, yours forever</div>
+          <ul class="price-features">
+            <li>Unlimited vault items</li>
+            <li>All four categories</li>
+            <li>Face ID &amp; Touch ID</li>
+            <li>Document scanner</li>
+            <li>24-word recovery phrase</li>
+            <li>Dead man's switch</li>
+          </ul>
+          <a href="https://apps.apple.com/us/app/hecate-digital-vault/id6813952247" class="price-btn filled" target="_blank" rel="noopener">Unlock Premium</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-section">
+    <div class="cta-card">
+      <h2>Some things are too important<br /><span>for a notes app.</span></h2>
+      <p>Your passwords, crypto recovery phrases, insurance policies, and your will deserve better than plaintext. Give them a vault that takes privacy seriously.</p>
+      <a href="https://apps.apple.com/us/app/hecate-digital-vault/id6813952247" class="appstore-btn" target="_blank" rel="noopener" aria-label="Download Hecate Digital Vault on the App Store">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+      <p class="cta-note">Free · iOS 17+ · iPhone, iPad &amp; Mac · 12 MB</p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>
+      © 2026 Hecate Digital Vault · Made by Ramill Ibragimov ·
+      <a href="https://apps.apple.com/us/app/hecate-digital-vault/id6813952247" target="_blank" rel="noopener">App Store</a>
+    </p>
+    <p style="margin-top: 8px; font-size: 12px;">
+      Digital Vault is a storage tool, not a legal service. It does not execute your will or give legal advice.
+    </p>
+  </footer>
+
+</body>
+</html>
